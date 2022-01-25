@@ -1,0 +1,97 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:vue/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "globals": {
+    "__wxConfig": true,
+    "wx": true,
+    "App": true,
+    "Page": true,
+    "Component": true,
+    "Behavior": true,
+    "getApp": true,
+    "getCurrentPages": true,
+    "gio" :true
+  },
+  "rules": {
+    "indent": [
+      "error",
+      2
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": 0,
+    "no-bitwise": [
+      "error",
+      {
+        "allow": ["~"]
+      }
+    ],
+    "no-unused-expressions": 0,
+    "no-plusplus": [
+      "error",
+      {
+        "allowForLoopAfterthoughts": true
+      }
+    ],
+    "consistent-return": 0,
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+    "max-len": "warn",
+    "no-unused-vars": "warn",
+    "prefer-const": 0,
+    "import/no-dynamic-require": "warn",
+    "no-param-reassign": "off",
+    "import/extensions": "off",
+    "no-underscore-dangle": "off",
+    "arrow-parens": 0,
+    "object-curly-newline": 0,
+    "arrow-body-style": 0,
+    "no-restricted-globals": 0,
+    "no-useless-computed-key": 0,
+    "no-shadow": 0,
+    "radix": 0,
+    "object-curly-spacing": 0,
+    "no-restricted-syntax": 0,
+    "object-shorthand": 0,
+    "dot-notation": 0,
+    "no-use-before-define": 0,
+    "space-before-function-paren": 0,
+    "camelcase": 0,
+    "prefer-spread": 0,
+    "new-cap": 0,
+    "eqeqeq": 0,
+    "prefer-destructuring": "off",
+    "guard-for-in": "off",
+    "no-console": "off",
+    "func-names": "off",
+    "no-multi-assign": "off",
+    "prefer-rest-params": "off",
+    "array-callback-return": 0,
+    "prefer-template": 0,
+    "no-inner-declarations": "warn",
+    "operator-assignment": 0,
+    "import/no-named-as-default": 0,
+    "import/no-named-as-default-member": 0,
+    "import/first": 0
+  }
+}
+

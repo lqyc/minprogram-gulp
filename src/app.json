@@ -1,0 +1,47 @@
+{
+	"pages": [
+		"pages/home/home",
+		"pages/activity/activity"
+	],
+	"subpackages": [],
+	"window": {
+		"navigationStyle": "custom",
+		"backgroundTextStyle": "light",
+		"navigationBarBackgroundColor": "#000000",
+		"navigationBarTitleText": "小程序搭建+",
+		"navigationBarTextStyle": "white"
+	},
+	"tabBar": {
+		"custom": true,
+		"color": "#999",
+		"selectedColor": "#000",
+		"borderStyle": "black",
+		"backgroundColor": "#000000",
+		"list": [
+			{
+				"pagePath": "pages/home/home"
+			},
+			{
+				"pagePath": "pages/star/star"
+			},
+			{
+				"pagePath": "pages/shopping-cart/shopping-cart"
+			},
+			{
+				"pagePath": "pages/user/user"
+			}
+		]
+	},
+	"usingComponents": {},
+	"networkTimeout": {
+		"request": 20000,
+		"downloadFile": 20000
+	},
+	"permission": {
+		"scope.userLocation": {
+			"desc": "您的位置信息将用于小程序定位。"
+		}
+	},
+	"plugins": {
+	}
+}
