@@ -47,13 +47,13 @@ function createFile() {
     name: 'styleType',
     message: 'Select a style framework',
     choices: ['less', 'scss', 'wxss'],
-    default: 'scss'
+    default: 'less'
   }, {
     type: 'list',
     name: 'HtmlType',
     message: 'Select a Html framework',
-    choices: ['html', 'jade', 'wxml'],
-    default: 'jade'
+    choices: ['jade','html', 'wxml'],
+    default: 'wxml'
   }, {
     type: 'confirm',
     name: 'preLoadType',
@@ -65,20 +65,23 @@ function createFile() {
     } = options
     const array = pageName.split(' ')
     if (array.length == 0) {
+      addFile(options)
       const res = addFile(options)
       if (res) addJson(options)
     }
     if (array.length != 0) {
-      array.forEach(item => {
-        options.pageName = item
-        const res = addFile(options)
-        if (res) addJson(options)
-      });
+      options.pageName = array[0] || 'index'
+      addJson(options)
+      addFile(options)
+      // array.forEach(item => {
+      //   options.pageName = item
+      //   const res = addFile(options) 
+      //   if (res) addJson(options)
+      // });
     }
   })
     .catch(err => {
-      throw new('generate', err)
-      // throw new plugins.util.PluginError('generate', err)
+      throw new plugins.util.PluginError('generate', err)
     })
 }
 

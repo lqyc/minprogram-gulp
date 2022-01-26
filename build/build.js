@@ -74,7 +74,8 @@ const compileStyle = src => src
   .pipe(plugins.plumber())
   .pipe(importVariable())
   .pipe(plugins.changed(output))
-  .pipe(plugins.sass())
+  // .pipe(plugins.sass())
+  .pipe(plugins.less())
   .pipe(plugins.rename({
     extname: '.wxss'
   }))
@@ -209,30 +210,16 @@ gulp.task('watch', () => {
   workerEventer(gulp.watch([`${entry}/**/*.js`], ['compile:js']))
 })
 
-gulp.task('compile:copy', [], () => gulp.src([
-    `${entry}/**/*.wxml`,
-    `${entry}/**/*.wxss`,
-    `${entry}/**/*.wxs`,
-    `${entry}/**/*.{eot,otf,ttf,woff,svg}`
-  ])
-  .pipe(gulp.dest(output)))
+// gulp.task('compile:copy', [], () => gulp.src([
+//     `${entry}/**/*.wxml`,
+//     `${entry}/**/*.wxss`,
+//     `${entry}/**/*.wxs`,
+//     `${entry}/**/*.{eot,otf,ttf,woff,svg}`
+//   ])
+//   .pipe(gulp.dest(output)))
 
 // 编译入口
-gulp.task('build', ['clean', 'compile:project'], () => {
-  runSequence([
-    'compile:copy',
-    'compile:jade',
-    'compile:pug',
-    'compile:scss',
-    'compile:js',
-    'compile:mina',
-    'compile:json',
-    'compress:img'
-  ], [
-    'watch'
-  ])
-})
-// gulp.task('build', gulp.series('clean', 'compile:project'), () => {
+// gulp.task('build', ['clean', 'compile:project'], () => {
 //   runSequence([
 //     'compile:copy',
 //     'compile:jade',
@@ -246,3 +233,26 @@ gulp.task('build', ['clean', 'compile:project'], () => {
 //     'watch'
 //   ])
 // })
+gulp.task('compile:copy',() => gulp.src([
+  `${entry}/**/*.wxml`,
+  `${entry}/**/*.wxss`,
+  `${entry}/**/*.wxs`,
+  `${entry}/**/*.{eot,otf,ttf,woff,svg}`
+])
+.pipe(gulp.dest(output)))
+
+// 编译入口
+gulp.task('build', gulp.series('clean', 'compile:project'), () => {
+  runSequence([
+    'compile:copy',
+    'compile:jade',
+    'compile:pug',
+    'compile:scss',
+    'compile:js',
+    'compile:mina',
+    'compile:json',
+    'compress:img'
+  ], [
+    'watch'
+  ])
+})

@@ -1,27 +1,21 @@
-## 安装依赖
+### 依赖安装
 
 ```bash
-cnpm install
+npm install
 ```
 
-
-## 新建页面
+### 新增页面
 
 ```bash
 npm run new
 ```
 
-### 运行
+### 运行环境
 ```bash
-# DEV环境
+# 开发环境
 npm run dev
 
-# UAT环境
-npm run uat
-
-# PROD环境
+# 生产环境
 npm run prod
 
-#代码压缩混淆
-npm run dev/uat/prod --build
 ```

@@ -11,11 +11,11 @@ shell.exec('chmod 777 ./bin/*')
 
 fs.writeFile(filePath, `${prefix}${JSON.stringify(config)}`, (err) => {
   if (err) {
-    return console.error(err)
+    return console.error('FS-ERROR',err)
   }
   fs.readFile(filePath, (err, data) => {
     if (err) {
-      return console.error(err)
+      return console.error('readFile-ERROR',err)
     }
     shell.cp('-r', './config.js', './src')
     shell.exec(`cross-env NODE_ENV=${env} npm run lint && gulp build --gulpfile ./build/build.js`)

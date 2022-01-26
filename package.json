@@ -6,9 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js,.vue ./src --fix",
-    "build": "cross-env NODE_ENV=production webpack --config build/webpack.config.js",
     "dev": "cross-env NODE_ENV=dev node build/exec.js",
-    "prod": "cross-env NODE_ENV=production node build/exec.js",
+    "prod": "cross-env NODE_ENV=prod node build/exec.js",
     "new": "node generate/index.js"
   },
   "keywords": [
@@ -34,6 +33,7 @@
     "inquirer": "^8.2.0",
     "mkdirp": "^1.0.4",
     "os": "^0.1.2",
+    "prettier": "^2.5.1",
     "run-sequence": "^2.2.1",
     "shelljs": "^0.8.5",
     "through2": "^4.0.2"
