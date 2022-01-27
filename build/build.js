@@ -2,7 +2,7 @@
 const gulp = require('gulp')
 const path = require('path')
 const shell = require('shelljs')
-const runSequence = require('run-sequence')
+// const runSequence = require('run-sequence')
 const through = require('through2')
 const plugins = require('gulp-load-plugins')()
 const jeditor = require('gulp-json-editor')
@@ -27,13 +27,14 @@ const entry = '../src'
 const output = '../dist/app'
 
 // 清空输出
-gulp.task('clean', () => {
+gulp.task('clean', (done) => {
   shell.rm('-rf', `${output}/`)
+  done()
 })
 
 // 处理小程序配置文件
-gulp.task('compile:project', () => {
-  gulp.src('../project.config.json')
+gulp.task('compile:project', (done) => {
+  gulp.src('../project.config.json',{allowEmpty: true})
     .pipe(jeditor(function (json) {
       const scripts = json.scripts
       for (let k in scripts) {
@@ -46,12 +47,13 @@ gulp.task('compile:project', () => {
       return json
     }))
     .pipe(gulp.dest('../dist'))
+    done()
 })
 
 const importVariable = () => through.obj(function (file, encode, cb) {
   let fileContent = file.contents.toString()
   fileContent = fileContent.replace(/@{cdnUrl}/g, config.cdnUrl)
-  file.contents = new Buffer(`${fileContent}`)
+  file.contents = Buffer.from(`${fileContent}`)
   this.push(file)
   cb()
 })
@@ -102,7 +104,7 @@ const importRuntime = () => through.obj(function (file, encode, cb) {
     fileVendor = ''
   }
   const fileContent = file.contents.toString()
-  file.contents = new Buffer(`${fileVendor}${fileContent}`)
+  file.contents = Buffer.from(`${fileVendor}${fileContent}`)
   this.push(file)
   cb()
 })
@@ -124,54 +126,72 @@ const compileConfig = src => src
   .pipe(gulp.dest(output))
 
 // handle jade,pug,scss,js,json
-// gulp.task('compile:jade', () => {
-//   const src = gulp.src(`${entry}/**/*.jade`)
-//   return compileTemplete(src)
-// })
-gulp.task('compile:pug', () => {
+gulp.task('compile:jade', () => {
+  const src = gulp.src(`${entry}/**/*.jade`)
+  return compileTemplete(src)
+})
+gulp.task('compile:wxml', (done) => {
+  const src = gulp.src(`${entry}/**/*.wxml`)
+  done()
+  return compileTemplete(src)
+})
+gulp.task('compile:pug', (done) => {
   const src = gulp.src(`${entry}/**/*.pug`)
+  done()
   return compileTemplete(src)
 })
 gulp.task('compile:scss', () => {
   const src = gulp.src(`${entry}/**/*.scss`)
   return compileStyle(src)
 })
-gulp.task('compile:js', () => {
+gulp.task('compile:less', (done) => {
+  done()
+  const src = gulp.src(`${entry}/**/*.less`)
+  return compileStyle(src)
+})
+gulp.task('compile:js', (done) => {
   const src = gulp.src([
     `${entry}/**/*.js`
   ])
+  done()
   return compileScript(src)
 })
-gulp.task('compile:json', () => {
+gulp.task('compile:json', (done) => {
   const src = gulp.src(`${entry}/**/*.json`)
+  done()
   return compileConfig(src)
 })
 
 // handle vue
-gulp.task('compile:mina:wxss', () => {
+gulp.task('compile:mina:wxss', (done) => {
   const src = gulp.src(`${entry}/**/*.vue`)
     .pipe(plugins.minaVue.style())
+    done()
   return compileStyle(src)
 })
-gulp.task('compile:mina:wxs', () => {
+gulp.task('compile:mina:wxs', (done) => {
   const src = gulp.src(`${entry}/**/*.vue`)
     .pipe(plugins.plumber())
     .pipe(plugins.minaVue.script())
+    done()
   return compileScript(src)
 })
-gulp.task('compile:mina:json', () => {
+gulp.task('compile:mina:json', (done) => {
   const src = gulp.src(`${entry}/**/*.vue`)
     .pipe(plugins.minaVue.config())
+    done()
   return compileConfig(src)
 })
-gulp.task('compile:mina:wxml', () => {
+gulp.task('compile:mina:wxml', (done) => {
   const src = gulp.src(`${entry}/**/*.vue`)
     .pipe(plugins.minaVue.template())
+    done()
   return compileTemplete(src)
 })
 
 // img
-gulp.task('compress:img', () => gulp.src([`${entry}/**/*.{jpg,jpeg,png,gif,svg}`])
+gulp.task('compress:img', ((done) => {
+  gulp.src([`${entry}/**/*.{jpg,jpeg,png,gif,svg}`], {allowEmpty: true})
   .pipe(plugins.plumber())
   .pipe(plugins.imagemin({
     verbose: true,
@@ -180,17 +200,19 @@ gulp.task('compress:img', () => gulp.src([`${entry}/**/*.{jpg,jpeg,png,gif,svg}`
     interlaced: true, // 类型：Boolean 默认：false 隔行扫描gif进行渲染
     multipass: true // 类型：Boolean 默认：false 多次优化svg直到完全优化
   }))
-  .pipe(gulp.dest(output)))
+  .pipe(gulp.dest(output))
+  done()
+}))
 
-
-gulp.task('compile:mina', next => {
-  runSequence([
-    'compile:mina:wxml',
+gulp.task('compile:mina', gulp.series(
+   'compile:mina:wxml',
     'compile:mina:wxss',
     'compile:mina:wxs',
-    'compile:mina:json'
-  ], next)
-})
+    'compile:mina:json',
+    function (done) {
+     done();
+    })
+)
 
 // 监听文件变动
 const workerEventer = (worker) => {
@@ -199,60 +221,54 @@ const workerEventer = (worker) => {
     shell.exec(`eslint ../${relPath} --fix-dry-run  --color`)
   })
 }
-gulp.task('watch', () => {
+gulp.task('watch', (done) => {
   gulp.watch(['../project.config.json'], ['compile:project'])
-  gulp.watch([`${entry}/**/*.jade`], ['compile:jade'])
+  gulp.watch([`${entry}/**/*.wxml`], ['compile:wxml'])
   gulp.watch([`${entry}/**/*.pug`], ['compile:pug'])
   gulp.watch([`${entry}/**/*.scss`], ['compile:scss'])
   gulp.watch([`${entry}/**/*.json`], ['compile:json'])
   gulp.watch([`${entry}/**/*.{jpg,jpeg,png,gif,svg}`], ['compress:img'])
   workerEventer(gulp.watch([`${entry}/**/*.vue`], ['compile:mina']))
   workerEventer(gulp.watch([`${entry}/**/*.js`], ['compile:js']))
+  done()
 })
 
-// gulp.task('compile:copy', [], () => gulp.src([
-//     `${entry}/**/*.wxml`,
-//     `${entry}/**/*.wxss`,
-//     `${entry}/**/*.wxs`,
-//     `${entry}/**/*.{eot,otf,ttf,woff,svg}`
-//   ])
-//   .pipe(gulp.dest(output)))
+gulp.task('compile:copy',(done) => {
+  gulp.src([
+   `${entry}/**/*.wxml`,
+   `${entry}/**/*.wxss`,
+   `${entry}/**/*.wxs`,
+   `${entry}/**/*.{eot,otf,ttf,woff,svg}`
+ ])
+ .pipe(gulp.dest(output))
+ done()
+})
 
 // 编译入口
-// gulp.task('build', ['clean', 'compile:project'], () => {
-//   runSequence([
-//     'compile:copy',
-//     'compile:jade',
-//     'compile:pug',
-//     'compile:scss',
-//     'compile:js',
-//     'compile:mina',
-//     'compile:json',
-//     'compress:img'
-//   ], [
-//     'watch'
-//   ])
-// })
-gulp.task('compile:copy',() => gulp.src([
-  `${entry}/**/*.wxml`,
-  `${entry}/**/*.wxss`,
-  `${entry}/**/*.wxs`,
-  `${entry}/**/*.{eot,otf,ttf,woff,svg}`
-])
-.pipe(gulp.dest(output)))
-
-// 编译入口
-gulp.task('build', gulp.series('clean', 'compile:project'), () => {
-  runSequence([
-    'compile:copy',
-    'compile:jade',
-    'compile:pug',
-    'compile:scss',
-    'compile:js',
-    'compile:mina',
-    'compile:json',
-    'compress:img'
-  ], [
-    'watch'
-  ])
+gulp.task('build', gulp.series(
+  'clean', 
+  'compile:project',
+  'compile:copy',
+  'compile:wxml',
+  'compile:pug',
+  'compile:less',
+  'compile:js',
+  'compile:mina',
+  'compile:json',
+  'compress:img',
+  // 'watch'
+  ), (done) => {
+  //  runSequence(
+    //  [
+    // 'compile:copy',
+    // 'compile:wxml',
+    // 'compile:pug',
+    // 'compile:less',
+    // 'compile:js',
+    // 'compile:mina',
+    // 'compile:json',
+    // 'compress:img'], 
+    // ['watch']
+  // )
+  done()
 })

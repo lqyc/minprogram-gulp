@@ -1,6 +1,3 @@
-
 <view class="w-page">
-  <text>
-    {{title}}
-  </text>
+  <text> {{ title }} </text>
 </view>

@@ -2,13 +2,13 @@
 	"pages": [
 		"pages/home/home",
 		"pages/activity/activity",
-		"pages/shopping/shopping"
+		"pages/shopping/shopping",
+		"pages/user/user"
 	],
 	"subpackages": [],
 	"window": {
-		"navigationStyle": "custom",
 		"backgroundTextStyle": "light",
-		"navigationBarBackgroundColor": "#000000",
+		"navigationBarBackgroundColor": "#fb5077",
 		"navigationBarTitleText": "小程序搭建+",
 		"navigationBarTextStyle": "white"
 	},

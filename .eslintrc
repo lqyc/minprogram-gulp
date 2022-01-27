@@ -20,8 +20,7 @@
     "Component": true,
     "Behavior": true,
     "getApp": true,
-    "getCurrentPages": true,
-    "gio" :true
+    "getCurrentPages": true
   },
   "rules": {
     "indent": [
