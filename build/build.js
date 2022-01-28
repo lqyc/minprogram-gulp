@@ -2,7 +2,6 @@
 const gulp = require('gulp')
 const path = require('path')
 const shell = require('shelljs')
-// const runSequence = require('run-sequence')
 const through = require('through2')
 const plugins = require('gulp-load-plugins')()
 const jeditor = require('gulp-json-editor')
@@ -193,13 +192,13 @@ gulp.task('compile:mina:wxml', (done) => {
 gulp.task('compress:img', ((done) => {
   gulp.src([`${entry}/**/*.{jpg,jpeg,png,gif,svg}`], {allowEmpty: true})
   .pipe(plugins.plumber())
-  .pipe(plugins.imagemin({
-    verbose: true,
-    optimizationLevel: 5, // 类型：Number  默认：3  取值范围：0-7（优化等级）
-    progressive: true, // 类型：Boolean 默认：false 无损压缩jpg图片
-    interlaced: true, // 类型：Boolean 默认：false 隔行扫描gif进行渲染
-    multipass: true // 类型：Boolean 默认：false 多次优化svg直到完全优化
-  }))
+  // .pipe(plugins.imagemin({
+  //   verbose: true,
+  //   optimizationLevel: 5, // 类型：Number  默认：3  取值范围：0-7（优化等级）
+  //   progressive: true, // 类型：Boolean 默认：false 无损压缩jpg图片
+  //   interlaced: true, // 类型：Boolean 默认：false 隔行扫描gif进行渲染
+  //   multipass: true // 类型：Boolean 默认：false 多次优化svg直到完全优化
+  // }))
   .pipe(gulp.dest(output))
   done()
 }))
@@ -221,16 +220,16 @@ const workerEventer = (worker) => {
     shell.exec(`eslint ../${relPath} --fix-dry-run  --color`)
   })
 }
-gulp.task('watch', (done) => {
-  gulp.watch(['../project.config.json'], ['compile:project'])
-  gulp.watch([`${entry}/**/*.wxml`], ['compile:wxml'])
-  gulp.watch([`${entry}/**/*.pug`], ['compile:pug'])
-  gulp.watch([`${entry}/**/*.scss`], ['compile:scss'])
-  gulp.watch([`${entry}/**/*.json`], ['compile:json'])
-  gulp.watch([`${entry}/**/*.{jpg,jpeg,png,gif,svg}`], ['compress:img'])
-  workerEventer(gulp.watch([`${entry}/**/*.vue`], ['compile:mina']))
-  workerEventer(gulp.watch([`${entry}/**/*.js`], ['compile:js']))
-  done()
+
+gulp.task('watch',async()=>{
+  gulp.watch("../project.config.json",gulp.series('compile:project'),(done)=>{done()});
+  gulp.watch(`${entry}/**/*.wxml`,gulp.series('compile:wxml'),(done)=>{done()});
+  gulp.watch(`${entry}/**/*.pug`,gulp.series('compile:pug'),(done)=>{done()});
+  gulp.watch(`${entry}/**/*.less`,gulp.series('compile:less'),(done)=>{done()});
+  gulp.watch(`${entry}/**/*.json`,gulp.series('compile:json'),(done)=>{done()});
+  gulp.watch(`${entry}/**/*.{jpg,jpeg,png,gif,svg}`,gulp.series('compress:img'),(done)=>{done()});
+  workerEventer( gulp.watch(`${entry}/**/*.vue`,gulp.series('compile:mina'),(done)=>{done()}))
+  workerEventer( gulp.watch(`${entry}/**/*.js`,gulp.series('compile:js'),(done)=>{done()}))
 })
 
 gulp.task('compile:copy',(done) => {
@@ -256,19 +255,7 @@ gulp.task('build', gulp.series(
   'compile:mina',
   'compile:json',
   'compress:img',
-  // 'watch'
+  'watch'
   ), (done) => {
-  //  runSequence(
-    //  [
-    // 'compile:copy',
-    // 'compile:wxml',
-    // 'compile:pug',
-    // 'compile:less',
-    // 'compile:js',
-    // 'compile:mina',
-    // 'compile:json',
-    // 'compress:img'], 
-    // ['watch']
-  // )
   done()
 })

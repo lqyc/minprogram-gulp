@@ -13,25 +13,36 @@
 		"navigationBarTextStyle": "white"
 	},
 	"tabBar": {
-		"custom": true,
-		"color": "#999",
-		"selectedColor": "#000",
-		"borderStyle": "black",
-		"backgroundColor": "#000000",
+    	"backgroundColor": "#fb5077",
+		"color": "#dbdbdb",
+		"selectedColor": "#ffffff",
+		"position":"bottom",
 		"list": [
 			{
-				"pagePath": "pages/home/home"
+			    "pagePath": "pages/home/home",
+				"iconPath": "assets/images/tabbar/icon-home.png",
+				"selectedIconPath": "assets/images/tabbar/icon-home-active.png",
+			    "text": "首页"
+			}, 
+			{
+			   "pagePath": "pages/activity/activity",
+			   "iconPath": "assets/images/tabbar/icon-category.png",
+			   "selectedIconPath": "assets/images/tabbar/icon-category-active.png",
+			   "text": "活动"
 			},
 			{
-				"pagePath": "pages/activity/activity"
+				"pagePath": "pages/shopping/shopping",
+				"iconPath": "assets/images/tabbar/icon-cart.png",
+				"selectedIconPath": "assets/images/tabbar/icon-cart-active.png",
+				"text": "购物"
 			},
 			{
-				"pagePath": "pages/shopping/shopping"
-			},
-			{
-				"pagePath": "pages/user/user"
+		    	"pagePath": "pages/user/user",
+				"iconPath": "assets/images/tabbar/icon-user.png",
+				"selectedIconPath": "assets/images/tabbar/icon-user-active.png",
+		    	"text": "我的"
 			}
-		]
+	    ]
 	},
 	"usingComponents": {},
 	"networkTimeout": {

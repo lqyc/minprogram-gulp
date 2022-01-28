@@ -1,4 +1,4 @@
 <view class="w-page">
-  <text> {{ title }} </text>
   <text>{{title}}</text>
+  <image class="img"  src="../../assets/images/3.jpg" mode="aspectFit"></image>
 </view>

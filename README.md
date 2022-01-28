@@ -5,7 +5,8 @@ npm install
 ```
 
 ### 新增页面
-
+- json 文件会同步新增
+- 分包路径与json不会同步新增
 ```bash
 npm run new
 ```
@@ -19,3 +20,6 @@ npm run dev
 npm run prod
 
 ```
+
+### Tips
+- 图片要自行压缩
