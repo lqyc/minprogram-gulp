@@ -1,1 +1,1 @@
-export default{"baseUrl":"","cdnUrl":"","appid":"","env":"dev","version":"0.0.1","miniProgramVersion":"0.0.1"}
+export default{"baseUrl":"https://testapi.haiwm.com/channel-cms-service","cdnUrl":"https://fdfs.haiwm.com/","appid":"wxabbb424cb32d5559","env":"dev","version":"0.0.1","miniProgramVersion":"0.0.1"}

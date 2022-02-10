@@ -5,11 +5,11 @@ Page({
         title: '${options.name}'
     },
 
-    onLoad: function() {
+    onLoad() {
 
     },
 
-    onShow: function() {
+    onShow() {
 
     },
 

@@ -8,8 +8,8 @@
 //   }
 // });
 App({
-//   store,
-  onLaunch(options) {
+  // store,
+  async onLaunch(options) {
     console.log('app-options:', options);
   },
   onShow() { },

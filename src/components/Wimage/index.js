@@ -1,20 +1,17 @@
-import Api from '../../api/homeAPI'
-
 Page({
-  $route: 'pages/home/home',
+  $route: 'pages/activity/activity',
   /**
-  * 页面的初始数据
-  */
+     * 页面的初始数据
+     */
   data: {
-    title: 'home-test'
+    title: 'activity'
   },
 
   /**
      * 生命周期函数--监听页面加载
-  */
-  async onLoad() {
-    const res = await Api.getBanner() || {};
-    console.log('onLoad-res:', res);
+     */
+  onLoad: function() {
+
   },
 
   /**

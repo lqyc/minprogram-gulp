@@ -228,8 +228,9 @@ gulp.task('watch',async()=>{
   gulp.watch(`${entry}/**/*.less`,gulp.series('compile:less'),(done)=>{done()});
   gulp.watch(`${entry}/**/*.json`,gulp.series('compile:json'),(done)=>{done()});
   gulp.watch(`${entry}/**/*.{jpg,jpeg,png,gif,svg}`,gulp.series('compress:img'),(done)=>{done()});
+  gulp.watch(`${entry}/**/*.js`,gulp.series('compile:js'),(done)=>{done()})
   workerEventer( gulp.watch(`${entry}/**/*.vue`,gulp.series('compile:mina'),(done)=>{done()}))
-  workerEventer( gulp.watch(`${entry}/**/*.js`,gulp.series('compile:js'),(done)=>{done()}))
+  // workerEventer( gulp.watch(`${entry}/**/*.js`,gulp.series('compile:js'),(done)=>{done()}))
 })
 
 gulp.task('compile:copy',(done) => {
